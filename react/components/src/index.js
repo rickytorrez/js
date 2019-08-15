@@ -8,6 +8,7 @@ import CommentDetail from './CommentDetail';
 import ApprovalCard from './ApprovalCard';
 
 const App = () => {
+    // nested components
     return (
         <div className="ui container comments">
             <ApprovalCard >
