@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import SeasonDisplay from './SeasonDisplay';
+
 class App extends React.Component {
-
-    // super is a reference to the parent's constructor function
-    constructor(props){
-        super(props);
-
-        // this is the only time we do direct assignment to this.state
-        this.state = { lat: null, errorMessage: '' };
-    }
+    
+    // state - constructor
+    state = { lat: null, errorMessage: ''};
 
     componentDidMount(){
         // geolocation to get user's location
@@ -27,7 +24,7 @@ class App extends React.Component {
         }
 
         if( !this.state.errorMessage && this.state.lat ){
-            return <div>Latitude: { this.state.lat }</div>
+            return <SeasonDisplay lat={ this.state.lat }/>
         }
 
         return <div>Loading... </div>
