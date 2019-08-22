@@ -9,17 +9,14 @@ class App extends React.Component {
 
         // this is the only time we do direct assignment to this.state
         this.state = { lat: null, errorMessage: '' };
+    }
 
+    componentDidMount(){
         // geolocation to get user's location
             // position is the response observable
         window.navigator.geolocation.getCurrentPosition(
-            position => {
-                // to update our state object, we call setState
-                this.setState({ lat: position.coords.latitude });
-            },
-            error => {
-                this.setState({ errorMessage: error.message });
-            }
+            position => this.setState({ lat: position.coords.latitude }),
+            error => this.setState({ errorMessage: error.message })
         );
     }
 
