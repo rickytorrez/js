@@ -1,5 +1,17 @@
 import React from 'react';
 
+// configuration object that tells us what text and icon we should use if it's summer or winter
+const seasonConfig = {
+    summer: {
+        text: "Let's hit the beach",
+        iconName: 'sun'
+    },
+    winter: {
+        text: "Burr, it's cold",
+        iconName: 'snowflake'
+    }
+};
+
 // function to determine the season
 const getSeason = (lat, month) => {
     if ( month > 2 && month < 9 ) {
@@ -16,12 +28,15 @@ const SeasonDisplay = (props) => {
     // const season uses the getSeason function above and passes the latitude from our props and the month from Date
     const season = getSeason(props.lat, new Date().getMonth());
 
-    // ternary operation to display text
-    const text = season === 'winter' ? 'Burr, it is chilly!' : 'Lets hit the beach';
+    // return our object with { text, iconName }
+    const { text, iconName } = seasonConfig[season];
 
     return (
-        <div> 
+        // className= `${icon} is the name of the icon, icon is the name of the class'
+        <div>
+            <i className={`${iconName} icon`} /> 
             <h1> { text }  </h1>
+            <i className={`${iconName} icon`} /> 
         </div>
     );
 };
