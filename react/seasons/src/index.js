@@ -9,6 +9,7 @@ class App extends React.Component {
     // state - constructor
     state = { lat: null, errorMessage: ''};
 
+    // lifecycle method
     componentDidMount(){
         // geolocation to get user's location
             // position is the response observable
@@ -18,8 +19,8 @@ class App extends React.Component {
         );
     }
 
-    // React says we have to define render
-    render(){
+    // conditonal option to decide what content to render
+    renderContent(){
         if( this.state.errorMessage && !this.state.lat ){
             return <div>Error: { this.state.errorMessage }</div>
         }
@@ -28,7 +29,16 @@ class App extends React.Component {
             return <SeasonDisplay lat={ this.state.lat }/>
         }
 
-        return <Spinner />
+        return <Spinner message="Please accept the location request" />;
+    }
+
+    // page render
+    render(){
+        return (
+            <div>
+                { this.renderContent() }
+            </div>
+        )
     }
 }
 
