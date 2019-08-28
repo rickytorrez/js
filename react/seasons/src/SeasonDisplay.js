@@ -1,6 +1,7 @@
 import './SeasonDisplay.css';
 import React from 'react';
 
+// config object
 // configuration object that tells us what text and icon we should use if it's summer or winter
 const seasonConfig = {
     summer: {
@@ -13,6 +14,7 @@ const seasonConfig = {
     }
 };
 
+// function
 // function to determine the season
 const getSeason = (lat, month) => {
     if ( month > 2 && month < 9 ) {
@@ -24,6 +26,8 @@ const getSeason = (lat, month) => {
     }
 }
 
+// component
+// functional component
 const SeasonDisplay = (props) => {
 
     // const season uses the getSeason function above and passes the latitude from our props and the month from Date
