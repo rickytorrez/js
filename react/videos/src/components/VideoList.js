@@ -9,7 +9,8 @@ const VideoList = ({ videos, onVideoSelect }) => {
     // map over the array that we receive from props for every single video
     const renderedList = videos.map((video) => {
         return (
-            <VideoItem 
+            <VideoItem
+                key={ video.id.videoId }
                 video={ video } 
                 onVideoSelect={ onVideoSelect }
             />
