@@ -33,7 +33,6 @@ class SongList extends Component {
 
 // take the state objects (data in redux store) and make it show as props in our component
 const mapStateToProps = (state) => {
-    console.log(state)
     return { songs: state.songs };
 }
 
