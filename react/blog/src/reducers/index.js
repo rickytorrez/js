@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
+import postReducer from './postReducer';
+
 export default combineReducers({
-    asdf: () => 10
+    post: postReducer
 });
