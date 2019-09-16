@@ -5,3 +5,10 @@ export const fetchPosts = () => async dispatch => {
 
     dispatch({ type: 'FETCH_POSTS', payload: response.data })
 };
+
+// pass in the id of the user we want to fetch
+export const fetchUser = (id) => async dispatch => {
+    const response = await jsonPlaceholder.get(`/users/${ id }`);
+    
+    dispatch({ type: 'FETCH_USER', payload: response.data })
+}
