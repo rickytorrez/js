@@ -5,10 +5,16 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     await dispatch(fetchPosts());
 
     // _.uniq returns an array with the unique userIds
-    const userIds = _.uniq(_.map(getState().posts, 'userId'));
-    userIds.forEach(id => dispatch(fetchUser(id)));
+    // const userIds = _.uniq(_.map(getState().posts, 'userId'));
+    // userIds.forEach(id => dispatch(fetchUser(id)));
 
-    
+    // same as above
+    _.chain(getState().posts)
+        .map('userId')
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value(); // execute the steps in order
+
 };
 
 export const fetchPosts = () => async dispatch => {
