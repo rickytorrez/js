@@ -9,6 +9,7 @@ import StreamList from './streams/StreamList';
 import StreamShow from './streams/StreamShow';
 
 const App = () => {
+    // Header component must be inside the router since it has routing inside of it.
     return(
         <div className="ui container">
             <BrowserRouter>
