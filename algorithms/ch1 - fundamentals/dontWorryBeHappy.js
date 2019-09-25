@@ -1,4 +1,5 @@
 // chapter 1 //
+
 // create beCheerful(); within it, console.log string "good morning!" //
 // call it 98 times //
 

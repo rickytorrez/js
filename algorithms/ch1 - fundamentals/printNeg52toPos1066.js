@@ -1,4 +1,5 @@
 // chapter 1 //
+
 // print integers from -52 to 1066 using a for loop //
 
 function printNeg52toPos1066(){
