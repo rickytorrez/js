@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
-class ToDoItem extends Component {
-
+class AddToDo extends Component {
     render(){
         return(
-            <div>ToDoItem</div>
+            <div>AddToDo</div>
         )
     }
 }
 
-export default ToDoItem;
+export default AddToDo;

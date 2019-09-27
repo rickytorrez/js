@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const ToDoList = () => {
-    return <div>List</div>
+class ToDoList extends Component {
+
+    render(){
+        return(
+            <div>List</div>
+        )
+    }
 }
 
 export default ToDoList;
