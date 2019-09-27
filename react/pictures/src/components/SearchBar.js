@@ -12,6 +12,7 @@ class SearchBar extends React.Component {
         this.props.onSubmit(this.state.term);
     }
 
+    // setState s1
     render(){
         return (
             <div className="ui segment">
