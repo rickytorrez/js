@@ -50,6 +50,8 @@ export default function App() {
   );
 }
 
+// Scrollview renders all the elements in advanced - not efficient
+
 const styles = StyleSheet.create({
   screen: {
     padding: 100
