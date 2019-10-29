@@ -3,8 +3,6 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 
 const ResultsDetail = ({ result }) => {
 
-    console.log(result);
-
     return(
         <View
             style={ styles.container }>
