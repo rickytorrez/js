@@ -6,13 +6,10 @@ import { Context, Provider } from '../context/BlogContext';
 
 const IndexScreen = ({ navigation }) => {
 
-    const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+    const { state, deleteBlogPost } = useContext(Context);
 
     return(
         <View>
-            <Button 
-                title='add post'
-                onPress={ addBlogPost }/>
             <FlatList
                 keyExtractor={( blogPost ) => blogPost.title }
                 data={ state }
