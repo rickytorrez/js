@@ -1,5 +1,6 @@
 import createDataContext from './createDataContext';
 
+
 const blogReducer = (state, action) => {
     switch (action.type) {
         case 'add_blogpost':
@@ -60,6 +61,7 @@ export const { Context, Provider } = createDataContext(
         addBlogPost, 
         deleteBlogPost,
         editBlogPost },
+    // hard-coded state to be used for testing
     [{ 
         id: 1,
         title: 'A mere test', 
