@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -6,7 +6,21 @@ import { Context, Provider } from '../context/BlogContext';
 
 const IndexScreen = ({ navigation }) => {
 
-    const { state, deleteBlogPost } = useContext(Context);
+    const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+
+    // every time the app loads, fetch content once
+    // also fetch every time we go back to this screen
+    useEffect(() => {
+        getBlogPosts();
+
+        const listener = navigation.addListener('didFocus', () => {
+            getBlogPosts()
+        });
+        
+        return () => {
+            listener.remove();
+        }
+    }, []);
 
     return(
         <View>
