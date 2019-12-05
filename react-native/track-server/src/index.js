@@ -17,8 +17,9 @@ app.use(authRoutes);
 
 // mongo connection
     // mongoURI settings
-const mongoURI = 'mongodb+srv://admin:admin@cluster0-enish.mongodb.net/test?retryWrites=true&w=majority'
-    // mongo connection
+const mongoURI = 'mongodb+srv://admin:admin@cluster0-iol0v.mongodb.net/test?retryWrites=true&w=majority'
+
+// mongo connection
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useCreateIndex: true,
