@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
+import BookCount from './components/BookCount';
+
 class App extends React.Component {
 
   constructor(){
@@ -9,8 +11,8 @@ class App extends React.Component {
       totalCount: 0,
       readingCount: 0,
       readCount: 0
-    }
-  }
+    };
+  };
 
   render(){
     return (
@@ -21,18 +23,15 @@ class App extends React.Component {
         </View>
         <View style={{ flex: 1 }}></View>
         <View style={ styles.footer }>
-          <View style={ styles.tabButtons }>
-            <Text style={ styles.tabText }>Total</Text>
-            <Text>{ this.state.totalCount }</Text>
-          </View>
-          <View style={ styles.tabButtons }>
-            <Text style={ styles.tabText }>Reading</Text>
-            <Text>{ this.state.readingCount }</Text>
-          </View>
-          <View style={ styles.tabButtons }>
-            <Text style={ styles.tabText }>Read</Text>
-            <Text>{ this.state.readCount }</Text>
-          </View>
+          <BookCount 
+            title='Total'
+            count={ this.state.totalCount }/>
+          <BookCount 
+            title='Reading'
+            count={ this.state.readingCount }/>
+          <BookCount 
+            title='Read'
+            count={ this.state.readCount }/>        
         </View>
         <SafeAreaView />
       </View>
