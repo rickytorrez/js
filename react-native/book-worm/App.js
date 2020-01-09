@@ -19,7 +19,9 @@ class App extends React.Component {
       totalCount: 0,
       readingCount: 0,
       readCount: 0,
-      isAddNewBookVisible: false
+      isAddNewBookVisible: false,
+      textInputData: '',
+      books: []
     };
   };
 
@@ -31,6 +33,18 @@ class App extends React.Component {
     this.setState({ isAddNewBookVisible: false });
   };
 
+  addBook = (book) => {
+    this.setState(
+      (state, props) => ({
+        books:[...state.books, book],
+        totalCount: state.totalCount + 1,
+        readingCount: state.readingCount + 1
+    }),
+      () => {
+        console.log(this.state.books);
+    })
+  };
+
   render(){
     return (
       <View style={{ flex: 1 }}>
@@ -38,12 +52,13 @@ class App extends React.Component {
 
         <View style={ styles.header }>
           <Text style={ styles.appTitle }>Book Worm</Text>
-        </View>
+        </View> 
 
         <View style={{ flex: 1 }}>
           { this.state.isAddNewBookVisible && (
             <View style={{ height: 50, flexDirection:'row' }}>
               <TextInput 
+                onChangeText={ (text) => this.setState({ textInputData: text }) }
                 style={{ 
                   flex: 1, 
                   backgroundColor: '#ececec',
@@ -52,7 +67,8 @@ class App extends React.Component {
                 placeholder='Enter Book Name' 
                 placeholderTextColor= 'grey'
               />
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={ () => this.addBook(this.state.textInputData) }>
                 <View style={{ 
                     width: 50,
                     height: 50,
