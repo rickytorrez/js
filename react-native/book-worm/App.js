@@ -5,7 +5,8 @@ import {
   View, 
   SafeAreaView, 
   TouchableOpacity,
-  TextInput 
+  TextInput,
+  FlatList
 } from 'react-native';
 
 import BookCount from './components/BookCount';
@@ -42,7 +43,7 @@ class App extends React.Component {
     }),
       () => {
         console.log(this.state.books);
-    })
+    });
   };
 
   render(){
@@ -101,6 +102,12 @@ class App extends React.Component {
               </TouchableOpacity>
           </View>
           )}
+
+          <FlatList 
+            data={ this.state.books }
+            renderItem={({ item })=><Text>{ item }</Text>}
+            keyExtractor={(item, index) => index.toString()}
+          />
 
           <TouchableOpacity 
             onPress={ this.showAddNewBook }
