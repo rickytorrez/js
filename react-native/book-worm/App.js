@@ -46,6 +46,26 @@ class App extends React.Component {
     });
   };
 
+  renderItem = (item, index) => (
+    <View style={{ height: 50, flexDirection: 'row' }}>
+      <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 5 }}>
+        <Text>{ item }</Text>
+      </View>
+      <TouchableOpacity
+        onPress={ () => this.addBook(this.state.textInputData) }>
+        <View style={{ 
+            width: 100,
+            height: 50,
+            backgroundColor: '#a5deba',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+          <Text style={{ fontWeight: 'bold', color: 'white' }}>Mark as Read</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
   render(){
     return (
       <View style={{ flex: 1 }}>
@@ -105,8 +125,13 @@ class App extends React.Component {
 
           <FlatList 
             data={ this.state.books }
-            renderItem={({ item })=><Text>{ item }</Text>}
+            renderItem={({ item }, index)=> this.renderItem(item, index) }
             keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={
+              <View style={{ marginTop: 50, alignItems: 'center' }}> 
+                <Text style={{ fontWeight: 'bold' }}>Not Reading Any Books.</Text>
+              </View>
+            }
           />
 
           <TouchableOpacity 
