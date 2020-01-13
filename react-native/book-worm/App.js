@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import BookCount from './components/BookCount';
+import CustomActionButton from './components/CustomActionButton';
 import { Ionicons } from '@expo/vector-icons';
 
 class App extends React.Component {
@@ -61,18 +62,11 @@ class App extends React.Component {
       <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 5 }}>
         <Text>{ item }</Text>
       </View>
-      <TouchableOpacity
-        onPress={ () => this.markAsRead(item, index) }>
-        <View style={{ 
-            width: 100,
-            height: 50,
-            backgroundColor: '#a5deba',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-          <Text style={{ fontWeight: 'bold', color: 'white' }}>Mark as Read</Text>
-        </View>
-      </TouchableOpacity>
+      <CustomActionButton
+        style={{ width: 100, backgroundColor: '#a5deba' }}
+        onPress={ () => this.markAsRead(item, index)  }>
+        <Text style={{ fontWeight: 'bold', color: 'white' }}>Mark as Read</Text>
+      </CustomActionButton>
     </View>
   );
 
@@ -98,39 +92,27 @@ class App extends React.Component {
                 placeholder='Enter Book Name' 
                 placeholderTextColor= 'grey'
               />
-              <TouchableOpacity
+
+              <CustomActionButton 
+                style={{ backgroundColor: '#a5deba' }}
                 onPress={ () => this.addBook(this.state.textInputData) }>
-                <View style={{ 
-                    width: 50,
-                    height: 50,
-                    backgroundColor: '#a5deba',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                  <Ionicons 
-                    name='ios-checkmark' 
-                    color='white' 
-                    size={ 40 }
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
+                <Ionicons 
+                  name='ios-checkmark' 
+                  color='white' 
+                  size={ 40 }
+                />
+              </CustomActionButton>
+
+              <CustomActionButton 
+                style={{ backgroundColor: '#deada5' }}
                 onPress={ this.hideAddNewBook }>
-                <View style={{ 
-                    width: 50,
-                    height: 50,
-                    backgroundColor: '#deada5',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                  <Ionicons 
-                    name='ios-close' 
-                    color='white' 
-                    size={ 40 }
-                  />
-                </View>
-              </TouchableOpacity>
-          </View>
+                <Ionicons 
+                  name='ios-close' 
+                  color='white' 
+                  size={ 40 }
+                />
+              </CustomActionButton>
+            </View>
           )}
 
           <FlatList 
@@ -144,26 +126,19 @@ class App extends React.Component {
             }
           />
 
-          <TouchableOpacity 
+          <CustomActionButton
             onPress={ this.showAddNewBook }
+            position= 'right'
             style={{ 
-              position: 'absolute', 
-              bottom: 20, 
-              right: 20 }}>
-            <View style={{ 
-              width: 50, 
-              height: 50, 
-              borderRadius: 25, 
-              backgroundColor: '#AAD1E6', 
-              alignItems: 'center', 
-              justifyContent: 'center' }}>
-              <Text style={{ 
-                color: 'white', 
-                fontSize: 30 }}>+</Text>
-            </View>
-          </TouchableOpacity>
+              backgroundColor: '#AAD1E6',
+              borderRadius: 25
+               }}>
+            <Text style={{ 
+              color: 'white', 
+              fontSize: 30 }}>+</Text>
+          </CustomActionButton>
+
         </View>
-        
 
         <View style={ styles.footer }>
           <BookCount 
