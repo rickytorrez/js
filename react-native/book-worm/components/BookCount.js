@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import PropTypes from 'prop-types';
+
 const BookCount = ({ count, title }) => 
     (
         <View style={ styles.tabButtons }>
@@ -11,6 +13,15 @@ const BookCount = ({ count, title }) =>
     
 
 export default BookCount;
+
+BookCount.prototype = {
+    count: PropTypes.number.isRequired,
+    title: PropTypes.string
+};
+
+BookCount.defaultProps = {
+    title: 'Title'
+};
 
 const styles = StyleSheet.create({
     tabButtons: {
