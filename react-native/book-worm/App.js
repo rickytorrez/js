@@ -46,13 +46,23 @@ class App extends React.Component {
     });
   };
 
+  markAsRead = (selectedBook, index) => {
+    let newList = this.state.books.filter((book) => book !== selectedBook);
+
+    this.setState((prevState) => ({
+      books: newList,
+      readingCount: prevState.readingCount - 1,
+      readCount: prevState.readCount + 1
+    }));
+  };
+
   renderItem = (item, index) => (
     <View style={{ height: 50, flexDirection: 'row' }}>
       <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 5 }}>
         <Text>{ item }</Text>
       </View>
       <TouchableOpacity
-        onPress={ () => this.addBook(this.state.textInputData) }>
+        onPress={ () => this.markAsRead(item, index) }>
         <View style={{ 
             width: 100,
             height: 50,

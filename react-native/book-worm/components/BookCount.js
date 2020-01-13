@@ -1,17 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-class BookCount extends React.Component {
-
-    render(){
-        return (
-            <View style={ styles.tabButtons }>
-                <Text style={ styles.tabText }>{ this.props.title }</Text>
-                <Text>{ this.props.count }</Text>
-            </View>
-        );
-    };
-};
+const BookCount = ({ count, title }) => 
+    (
+        <View style={ styles.tabButtons }>
+            <Text style={ styles.tabText }>{ title }</Text>
+            <Text>{ count }</Text>
+        </View>
+    );
+    
 
 export default BookCount;
 
