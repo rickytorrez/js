@@ -12,6 +12,7 @@ import {
 import BookCount from './components/BookCount';
 import CustomActionButton from './components/CustomActionButton';
 import { Ionicons } from '@expo/vector-icons';
+import colors from './assets/colors';
 
 class App extends React.Component {
 
@@ -58,43 +59,39 @@ class App extends React.Component {
   };
 
   renderItem = (item, index) => (
-    <View style={{ height: 50, flexDirection: 'row' }}>
-      <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 5 }}>
+    <View style={ styles.bookList }>
+      <View style={ styles.bookItem }>
         <Text>{ item }</Text>
       </View>
       <CustomActionButton
-        style={{ width: 100, backgroundColor: '#a5deba' }}
+        style={ styles.readButton }
         onPress={ () => this.markAsRead(item, index)  }>
-        <Text style={{ fontWeight: 'bold', color: 'white' }}>Mark as Read</Text>
+        <Text style={ styles.readText }>Mark as Read</Text>
       </CustomActionButton>
     </View>
   );
 
   render(){
     return (
-      <View style={{ flex: 1 }}>
+      <View style={ styles.container }>
         <SafeAreaView />
 
         <View style={ styles.header }>
           <Text style={ styles.appTitle }>Book Worm</Text>
         </View> 
 
-        <View style={{ flex: 1 }}>
+        <View style={ styles.container }>
           { this.state.isAddNewBookVisible && (
-            <View style={{ height: 50, flexDirection:'row' }}>
+            <View style={ styles.textContainer }>
               <TextInput 
                 onChangeText={ (text) => this.setState({ textInputData: text }) }
-                style={{ 
-                  flex: 1, 
-                  backgroundColor: '#ececec',
-                  paddingLeft: 5
-                }} 
+                style={ styles.textInput } 
                 placeholder='Enter Book Name' 
-                placeholderTextColor= 'grey'
+                placeholderTextColor= { colors.txtPlaceholder }
               />
 
               <CustomActionButton 
-                style={{ backgroundColor: '#a5deba' }}
+                style={ styles.checkmark }
                 onPress={ () => this.addBook(this.state.textInputData) }>
                 <Ionicons 
                   name='ios-checkmark' 
@@ -104,7 +101,7 @@ class App extends React.Component {
               </CustomActionButton>
 
               <CustomActionButton 
-                style={{ backgroundColor: '#deada5' }}
+                style={ styles.close }
                 onPress={ this.hideAddNewBook }>
                 <Ionicons 
                   name='ios-close' 
@@ -120,8 +117,8 @@ class App extends React.Component {
             renderItem={({ item }, index)=> this.renderItem(item, index) }
             keyExtractor={(item, index) => index.toString()}
             ListEmptyComponent={
-              <View style={{ marginTop: 50, alignItems: 'center' }}> 
-                <Text style={{ fontWeight: 'bold' }}>Not Reading Any Books.</Text>
+              <View style={ styles.emptyBookContainer }> 
+                <Text style={ styles.emptyBookText }>Not Reading Any Books.</Text>
               </View>
             }
           />
@@ -129,15 +126,9 @@ class App extends React.Component {
           <CustomActionButton
             onPress={ this.showAddNewBook }
             position= 'right'
-            style={{ 
-              backgroundColor: '#AAD1E6',
-              borderRadius: 25
-               }}>
-            <Text style={{ 
-              color: 'white', 
-              fontSize: 30 }}>+</Text>
+            style={ styles.addButton }>
+            <Text style={ styles.addText }>+</Text>
           </CustomActionButton>
-
         </View>
 
         <View style={ styles.footer }>
@@ -161,10 +152,13 @@ class App extends React.Component {
 export default App;
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1
+  },
   header: {
     height: 70, 
     borderBottomWidth: 0.5, 
-    borderBottomColor: '#E9E9E9', 
+    borderBottomColor: colors.borderColor , 
     alignItems: 'center', 
     justifyContent: 'center'
   },
@@ -174,7 +168,7 @@ const styles = StyleSheet.create({
   footer: {
     height: 70, 
     borderTopWidth: 0.5, 
-    borderTopColor: '#E9E9E9',
+    borderTopColor: colors.borderColor ,
     flexDirection: 'row',
   },
   tabButtons: {
@@ -184,5 +178,52 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 20
+  },
+  bookList: {
+    height: 50, 
+    flexDirection: 'row'
+  },
+  bookItem: {
+    flex: 1, 
+    justifyContent: 'center', 
+    paddingLeft: 5
+  },
+  readButton: {
+    width: 100, 
+    backgroundColor: colors.bgSuccess
+  },
+  readText: {
+    fontWeight: 'bold', 
+    color: 'white' 
+  },
+  textContainer: {
+    height: 50, 
+    flexDirection:'row'
+  },
+  textInput: {
+    flex: 1, 
+    backgroundColor: colors.bgTextInput,
+    paddingLeft: 5
+  },
+  emptyBookContainer: {
+    marginTop: 50, 
+    alignItems: 'center'
+  },
+  emptyBookText: {
+    fontWeight: 'bold'
+  },
+  addButton: {
+    backgroundColor: colors.bgPrimary,
+    borderRadius: 25
+  },
+  addText: {
+    color: 'white',
+    fontSize: 30
+  },
+  checkmark: {
+    backgroundColor: colors.bgSuccess
+  },
+  close: {
+    backgroundColor: colors.bgError
   }
 });
