@@ -26,7 +26,20 @@ class App extends React.Component {
       textInputData: '',
       books: []
     };
+    console.log('constructor');
   };
+
+  componentDidMount(){
+    console.log('did mount');
+  }
+
+  componentDidUpdate(){
+    console.log('did update')
+  }
+
+  componentWillUnmount(){
+    console.log('will unmount')
+  }
 
   showAddNewBook = () => {
     this.setState({ isAddNewBookVisible: true });
@@ -72,6 +85,9 @@ class App extends React.Component {
   );
 
   render(){
+
+    console.log('render');
+
     return (
       <View style={ styles.container }>
         <SafeAreaView />
