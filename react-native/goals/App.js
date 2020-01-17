@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
@@ -14,9 +14,16 @@ export default function App() {
     setCourseGoals(currentGoals => [...currentGoals, { id: Math.random().toString(), value: goalTitle }]);
   };
 
+  const removeGoalHandler = (goalId) => {
+    // filter always gives returns new array
+    setCourseGoals(currentGoals => {
+        return currentGoals.filter((goal) => goal.id !== goalId);
+    })
+  };
+
   // we do not call the functions onPress since they would be invoked when the component renders
   return (
-    <View style={styles.container}>
+    <View style={styles.container} on>
       <GoalInput onAddGoal={ addGoalHandler }/>
       <View>
         <FlatList 
@@ -24,7 +31,9 @@ export default function App() {
           data={courseGoals}
           renderItem={(itemData) =>
             <GoalItem 
-              title={ itemData.item.value }/>
+              title={ itemData.item.value }
+              id={ itemData.item.id }
+              onDelete={ removeGoalHandler }/>
           }/>
       </View>
     </View>
