@@ -9,10 +9,15 @@ export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
   const [isAddMode, setIsAddMode] = useState(false);
 
+  console.log(courseGoals);
+
   const addGoalHandler = (goalTitle) => {
     // currentGoals gives you the latest guaranteed snapshot for the array of goals
       // better than [...courseGoals, eneteredGoal]
     // setIsAddMode turn the modal to false
+    if(goalTitle.length === 0){
+      return;
+    }
     setCourseGoals(currentGoals => [
       ...currentGoals, 
       { id: Math.random().toString(), value: goalTitle }
@@ -24,7 +29,7 @@ export default function App() {
     // filter always gives returns new array
     setCourseGoals(currentGoals => {
         return currentGoals.filter((goal) => goal.id !== goalId);
-    })
+    });
   };
 
   const toggleModal = () => {
