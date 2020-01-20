@@ -1,31 +1,56 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
-import Card from '../components/Card'
+import Card from '../components/Card';
+import Input from '../components/Input';
+import Colors from '../constants/colors';
 
 const StartGameScreen = (props) => {
+
+    const[enteredValue, setEnteredValue] = useState('')
+    console.log('enteredValue at useState', enteredValue);
+
+    const numberInputHandler = (inputText) => {
+        console.log('inputText at numberHandler', inputText);
+        setEnteredValue(inputText.replace(/[^0-9]/g, ''))
+    };
+
     return (
-        <View style={ styles.screen }>
-            <Text style={ styles.title }>Start a New Game!</Text>
-            <Card style={ styles.cardStyle }>
-                <Text>Select a Number</Text>
-                <TextInput />
-                <View style={ styles.buttonContainer }>
-                    <View style={ styles.button }>
-                        <Button 
-                            title='Reset'
-                            onPress={ () => console.log('reset') }
-                            color='#c717fc'/>
+        <TouchableWithoutFeedback
+            onPress={ () => { 
+                Keyboard.dismiss()
+             } }>
+            <View style={ styles.screen }>
+                <Text style={ styles.title }>Start a New Game!</Text>
+                <Card style={ styles.cardStyle }>
+                    <Text>Select a Number</Text>
+                    <Input 
+                        style={ styles.input }
+                        blurOnSubmit
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        keyboardType='number-pad'
+                        maxLength={2}
+                        onChangeText={ numberInputHandler }
+                        value={ enteredValue }
+                        />
+                    <View style={ styles.buttonContainer }>
+                        <View style={ styles.button }>
+                            <Button 
+                                title='Reset'
+                                onPress={ () => console.log('reset') }
+                                color={ Colors.accent }/>
+                        </View>
+                        <View style={ styles.button }>
+                            <Button 
+                                title='Confirm'
+                                onPress={ () => console.log('confirm') }
+                                color={ Colors.primary }/>
+                        </View>
                     </View>
-                    <View style={ styles.button }>
-                        <Button 
-                            title='Confirm'
-                            onPress={ () => console.log('confirm') }
-                            color='#f7287b'/>
-                    </View>
-                </View>
-            </Card>
-        </View>
+                </Card>
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -52,6 +77,10 @@ const styles = StyleSheet.create ({
     },
     button: {
         width: 100
+    },
+    input: {
+        width: 50,
+        textAlign: 'center'
     }
 });
 
