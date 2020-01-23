@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, FlatList, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import MainButton from '../components/MainButton';
+import BodyText from '../components/BodyText';
 import DefaultStyles from '../constants/default-styles';
 
 const generateRandomBetween = (min, max, exclude) => {
@@ -19,11 +20,21 @@ const generateRandomBetween = (min, max, exclude) => {
     }
 };
 
+const renderListItem = (listLength, itemData) => (
+    <View style={ styles.listItem }>
+        <BodyText># { listLength - itemData.index }</BodyText>
+        <BodyText style={ styles.listItemText }>{ itemData.item }</BodyText>
+    </View>
+);
+
 const GameScreen = (props) => {
+    
+    const initialGuess = generateRandomBetween(1, 100, props.userChoice)
 
     // useState will call on the generateRandomBetween and save the value if currentGuess is undefined. 
-    const [currentGuess, setCurrentGuess] = useState(generateRandomBetween(1, 100, props.userChoice));
-    const [numberOfRounds, setNumberofRounds] = useState(0);
+    const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    // state to save the guesses provided by the algorithm
+    const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
 
     const currentLow = useRef(1);
     const currentHigh = useRef(100);
@@ -33,7 +44,7 @@ const GameScreen = (props) => {
     // useEffect's function runs 'after' every render cycle for this component
     useEffect(() => {
         if(currentGuess === userChoice){
-            onGameOver(numberOfRounds);
+            onGameOver(pastGuesses.length);
         }
     }, [currentGuess, userChoice, onGameOver]);
 
@@ -49,11 +60,17 @@ const GameScreen = (props) => {
         if (direction === 'lower'){
             currentHigh.current = currentGuess;
         } else {
-            currentLow.current = currentGuess;
+            currentLow.current = currentGuess + 1;
         }
         const nextGuess = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess);
         setCurrentGuess(nextGuess);
-        setNumberofRounds(currentRounds => currentRounds + 1);
+        // setNumberofRounds(currentRounds => currentRounds + 1);
+        // currentPassedGuesses is our latest state array of guesses and we want to update it 
+        // return a new array
+        // we pass the new guess at the beggining so the user can see it first
+
+        // using currentGuess wouldn't work bc React won't have update the state or re-built the component yet
+        setPastGuesses((currentPassedGuesses) => [nextGuess.toString(), ...currentPassedGuesses]);
     };
 
     return (
@@ -72,6 +89,16 @@ const GameScreen = (props) => {
                     <Ionicons name='md-add' size={ 24 } color='white' />
                 </MainButton>
             </Card>
+            <View style={ styles.listContainer }>
+                {/* <ScrollView>
+                    {pastGuesses.map((guess, index) => renderListItem(guess, pastGuesses.length - index))}
+                </ScrollView> */}
+                <FlatList 
+                    keyExtractor = { (item) => item }
+                    data={ pastGuesses }
+                    renderItem={ renderListItem.bind(this, pastGuesses.length) }
+                />
+            </View>
         </View>
     );
 };
@@ -88,7 +115,21 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 300,
         maxWidth: '80%'
-    }
+    },listContainer: {
+        flex: 1,
+        width: '75%'
+    },
+    listItem: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        padding: 15,
+        marginVertical: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderRadius: 20
+    },
+    
 });
 
 export default GameScreen;
