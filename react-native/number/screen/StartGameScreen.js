@@ -12,13 +12,14 @@ import {
 import Card from '../components/Card';
 import Input from '../components/Input';
 import NumberContainer from '../components/NumberContainer';
+import BodyText from '../components/BodyText';
 import Colors from '../constants/colors';
 
 const StartGameScreen = (props) => {
 
     const [enteredValue, setEnteredValue] = useState('');
     const [confirmed, setConfirmed] = useState(false);
-    const [selectedNumber, setSelectedNumber] = useState()
+    const [selectedNumber, setSelectedNumber] = useState();
 
     const numberInputHandler = (inputText) => {
         setEnteredValue(inputText.replace(/[^0-9]/g, ''))
@@ -50,8 +51,9 @@ const StartGameScreen = (props) => {
 
     let confirmedOutput;
 
+    // add arrow function to call on the component before it loads the next screen
     if (confirmed){
-        confirmedOutput = 
+        confirmedOutput = (
             <Card style={ styles.summaryContainer }>
                 <Text>You selected:</Text>
                 <NumberContainer>
@@ -59,8 +61,9 @@ const StartGameScreen = (props) => {
                 </NumberContainer>
                 <Button 
                     title='START GAME'
-                    onPress={ props.onStartGame(selectedNumber)}/>
+                    onPress={ () => props.onStartGame(selectedNumber) }/>
             </Card>
+        );
     };
 
     return (
@@ -71,7 +74,7 @@ const StartGameScreen = (props) => {
             <View style={ styles.screen }>
                 <Text style={ styles.title }>Start a New Game!</Text>
                 <Card style={ styles.cardStyle }>
-                    <Text>Select a Number</Text>
+                    <BodyText>Select a Number</BodyText>
                     <Input 
                         style={ styles.input }
                         blurOnSubmit
@@ -112,6 +115,7 @@ const styles = StyleSheet.create ({
     title: {
         fontSize: 20,
         marginVertical: 10,
+        fontFamily: 'open-sans-bold'
     },
     cardStyle: {
         width: 300,
@@ -134,6 +138,9 @@ const styles = StyleSheet.create ({
     summaryContainer: {
         marginTop: 20,
         alignItems: 'center'
+    },
+    text: {
+        fontFamily: 'open-sans'
     }
 });
 
