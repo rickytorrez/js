@@ -8,6 +8,7 @@ import { enableScreens } from 'react-native-screens';
 
 import MealsNavigator from './navigation/MealsNavigator';
 
+// function to display correct screens on iOS and android
 enableScreens();
 
 const fetchFonts = () => {
