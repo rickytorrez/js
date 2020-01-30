@@ -21,8 +21,15 @@ const CategoriesMealsScreen = (props) => {
                     complexity={ itemData.item.complexity.toUpperCase() }
                     affordability={ itemData.item.affordability.toUpperCase() }
                     image={ itemData.item.imageUrl }
-                    onSelectMeal={ () => console.log('meal')
-                     }/>
+                    onSelectMeal={ () => props.navigation.navigate(
+                        {
+                            routeName: 'MealDetail',
+                            params: {
+                                mealItemId: itemData.item.id
+                            }
+                        }
+                    ) 
+                }/>
             </View>
         );
     }
