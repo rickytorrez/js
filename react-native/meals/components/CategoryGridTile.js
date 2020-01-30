@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform, TouchableNativeFeed
 
 const CategoryGridTile = (props) => {
 
+    // styling check for OS on mobile
     let TouchableCmp = TouchableOpacity;
 
     if (Platform.OS === 'android' && Platform.Version >= 21){
