@@ -31,6 +31,7 @@ const MealsNavigator = createStackNavigator({
     }
 });
 
+// import material ui icons for andriod icions
 const MealsFavTabBottomNagivator = createBottomTabNavigator({
     Meals: {
         screen: MealsNavigator,
