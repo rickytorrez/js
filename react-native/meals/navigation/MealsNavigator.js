@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { Platform } from 'react-native';
+
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { Ionicons } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createAppContainer } from 'react-navigation';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import CategoriesScreen from '../screens/CategoriesScreen';
 import CategoryMealsScreen from '../screens/CategoryMealsScreen';
@@ -23,7 +25,7 @@ const defaultStackNavOptions = {
     headerTitle: 'A Screen'
 };
 
-
+// meaks stack
 const MealsNavigator = createStackNavigator({
     Categories: {
         screen: CategoriesScreen,
@@ -44,6 +46,7 @@ const FavNavigator = createStackNavigator({
     defaultNavigationOptions: defaultStackNavOptions
 });
 
+// configuration of icons and page title for landing screen
 const tabsScreenConfig = {
     Meals: {
         screen: MealsNavigator,
@@ -69,7 +72,7 @@ const tabsScreenConfig = {
     }
 };
 
-// import material ui icons for andriod icions
+// android based icons using material ui
 const MealsFavTabBottomNagivator = 
     Platform.OS === 'android' 
     ? createMaterialBottomTabNavigator( tabsScreenConfig, {
@@ -82,10 +85,16 @@ const MealsFavTabBottomNagivator =
         }
     });
 
+// filters stack
 const FiltersNavigator = createStackNavigator({
     Filters: FiltersScreen
+}, {
+    defaultNavigationOptions: defaultStackNavOptions
 });
 
+// main navigator
+    // nested tabScreenConfig passed through MealsFavTabBottomNagivator
+    // nested filters passed in navigator
 const MainNavigator = createDrawerNavigator({
     MealsFavs: MealsFavTabBottomNagivator,
     Filters: FiltersNavigator
