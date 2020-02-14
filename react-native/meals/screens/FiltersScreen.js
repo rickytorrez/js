@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -8,7 +8,15 @@ const FiltersScreen = (props) => {
     return (
         <View style={ styles.screen }>
             <Text style={ styles.title }>Available Filters</Text>
-            
+            <TouchableOpacity>
+                <Text>Vegan</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <Text>Gluten Free</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <Text>Vegeterian</Text>
+            </TouchableOpacity>
         </View>
     );
 };
