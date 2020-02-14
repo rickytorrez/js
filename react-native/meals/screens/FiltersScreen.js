@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 
 const FiltersScreen = (props) => {
+
+    const [isGlutenFree, setIsGlutenFree] = useState(false);
+
     return (
         <View style={ styles.screen }>
             <Text style={ styles.title }>Available Filters</Text>
             <View style={ styles.filterContainter }>
                 <Text>Gluten-Free </Text>
-                <Switch />
+                {/* Switch manually manages their state */}
+                <Switch 
+                    value={ isGlutenFree }
+                    onValueChange={ (newValue) => {setIsGlutenFree(newValue)} }    
+                />
             </View>
         </View>
     );
