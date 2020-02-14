@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Switch, StyleSheet } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -8,15 +8,10 @@ const FiltersScreen = (props) => {
     return (
         <View style={ styles.screen }>
             <Text style={ styles.title }>Available Filters</Text>
-            <TouchableOpacity>
-                <Text>Vegan</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>Gluten Free</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>Vegeterian</Text>
-            </TouchableOpacity>
+            <View style={ styles.filterContainter }>
+                <Text>Gluten-Free </Text>
+                <Switch />
+            </View>
         </View>
     );
 };
@@ -38,8 +33,19 @@ FiltersScreen.navigationOptions = (navData) => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center'
+    },
+    title: {
+        fontFamily: 'open-sans-bold',
+        margin: 20,
+        fontSize: 22,
+        textAlign: 'center'
+    },
+    filterContainter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '80%'
     }
 });
 
