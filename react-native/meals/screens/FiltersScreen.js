@@ -26,7 +26,7 @@ const FiltersScreen = (props) => {
     // destructure props for navigation
     const { navigation } = props;
 
-    // set state to filter variables
+    // set state to filters
     const [isGlutenFree, setIsGlutenFree] = useState(false);
     const [isVegan, setIsVegan] = useState(false);
     const [isDairyFree, setIsDairyFree] = useState(false);
