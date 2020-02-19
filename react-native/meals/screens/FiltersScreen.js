@@ -23,8 +23,10 @@ const FilterSwitch = (props) => {
 
 const FiltersScreen = (props) => {
 
+    // destructure props for navigation
     const { navigation } = props;
 
+    // set state to filter variables
     const [isGlutenFree, setIsGlutenFree] = useState(false);
     const [isVegan, setIsVegan] = useState(false);
     const [isDairyFree, setIsDairyFree] = useState(false);
