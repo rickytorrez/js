@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import { MEALS } from '../data/dummydata';
+import { useSelector } from 'react-redux';
+
 import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
 
@@ -14,9 +15,13 @@ const ListItem = props => {
 
 const MealDetailScreen = (props) => {
 
+    const availableMeals = useSelector( (state) => {
+        state.meals.meal
+    });
+
     const mealId = props.navigation.getParam('mealItemId');
 
-    const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+    const selectedMeal = availableMeals.find((meal) => meal.id === mealId);
     
     return (
         <ScrollView>
