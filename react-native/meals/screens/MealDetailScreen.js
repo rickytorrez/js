@@ -15,12 +15,10 @@ const ListItem = props => {
 
 const MealDetailScreen = (props) => {
 
-    const availableMeals = useSelector( (state) => {
-        state.meals.meal
-    });
+    const availableMeals = useSelector(state => state.meals.meals);
 
     const mealId = props.navigation.getParam('mealItemId');
-
+    
     const selectedMeal = availableMeals.find((meal) => meal.id === mealId);
     
     return (
@@ -55,7 +53,7 @@ MealDetailScreen.navigationOptions = (navigationData) => {
     const mealId = navigationData.navigation.getParam('mealItemId');
     const mealTitle = navigationData.navigation.getParam('mealTitle');
     return {
-        headerTitle: selectedMeal.title,
+        headerTitle: mealTitle,
         headerRight: () => 
             <HeaderButtons
                 HeaderButtonComponent={ HeaderButton }>

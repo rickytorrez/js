@@ -9,9 +9,7 @@ import HeaderButton from '../components/HeaderButton';
 
 const FavoritesScreen = (props) => {
 
-    const favMeals = useSelector( (state) => {
-        state.meals.favoriteMeals
-    });
+    const favMeals = useSelector(state => state.meals.favoriteMeals);
 
     return <MealList 
                 listData={ favMeals }

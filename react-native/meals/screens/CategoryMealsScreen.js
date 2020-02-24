@@ -10,9 +10,7 @@ const CategoriesMealsScreen = (props) => {
 
     const catId = props.navigation.getParam('categoryId');
 
-    const availableMeals = useSelector( (state) => {
-        state.meals.filteredMeals
-    });
+    const availableMeals = useSelector(state => state.meals.filteredMeals);
 
     const displayMeals = availableMeals.filter(
         (meal) => meal.categoryIds.indexOf(catId) >= 0
