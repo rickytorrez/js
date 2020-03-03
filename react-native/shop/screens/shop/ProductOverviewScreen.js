@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 const ProductOverviewScreen = (props) => {
 
+    // useSelector for slice of the state
     const products = useSelector(state => state.products.availableProducts)
 
     return (
