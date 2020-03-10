@@ -4,9 +4,9 @@
 // call it 98 times //
 
 function beCheerful(){
-    for(var x=0; x<=98; x++){
-        console.log("good morning!");
-    }
-}
+    for(x=1; x<=98; x++){
+        console.log('good morning');
+    };
+};
 
 beCheerful();

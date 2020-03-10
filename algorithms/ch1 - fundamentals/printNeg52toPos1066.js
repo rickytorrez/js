@@ -1,11 +1,12 @@
 // chapter 1 //
 
-// print integers from -52 to 1066 using a for loop //
+// print integers from -52 to 1066 //
+// using a for loops //
 
-function printNeg52toPos1066(){
-    for(var x=-52; x<=1066; x++){
+function printNegToPos () {
+    for(x=-53; x<=1066; x++){
         console.log(x);
-    }
-}
+    };
+};
 
-printNeg52toPos1066();
+printNegToPos();
