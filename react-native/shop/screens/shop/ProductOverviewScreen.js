@@ -1,8 +1,12 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { Platform, FlatList, StyleSheet } from 'react-native';
 
 // store import - useDispatch to dispatch redux actions
 import { useSelector, useDispatch } from 'react-redux'; 
+
+// header button
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from '../../components/UI/HeaderButton';
 
 // import actions
 import * as cartActions from '../../store/actions/cart';
@@ -40,8 +44,21 @@ const ProductOverviewScreen = (props) => {
     );
 };
 
-ProductOverviewScreen.navigationOptions = {
-    headerTitle: 'All Products'
+ProductOverviewScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: 'All Products',
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={ HeaderButton }>
+                <Item 
+                    title='Cart'
+                    iconName={ Platform.OS === 'android' ? 'md-cart' : 'ios-cart' }
+                    onPress={ () => {
+                        navData.navigation.navigate('CartScreen')
+                    } }
+                />
+            </HeaderButtons>
+        )
+    }
 };
 
 const styles = StyleSheet.create({});
