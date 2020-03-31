@@ -33,11 +33,6 @@ const CartScreen = (props) => {
                     title='Order Now' 
                     disabled={ cartItems.length === 0 }/>
             </View>
-            <FlatList
-                data={ cartItems }
-                keyExtractor={ item => item.productId }
-                renderItem={ itemData => { }}
-            />
         
             <FlatList
                 data={ cartItems }
@@ -55,7 +50,7 @@ const CartScreen = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({``
     screen: {
         margin: 20,
     },
