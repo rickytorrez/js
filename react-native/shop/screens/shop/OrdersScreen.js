@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { Platform, Text, FlatList, StyleSheet } from 'react-native';
+
+// header button
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from '../../components/UI/HeaderButton';
 
 import { useSelector } from 'react-redux';
 
 const OrdersScreen = (props) => {
 
     const orders = useSelector(state => state.orders.orders);
+    console.log(orders);
+    
 
     return (
         <FlatList 
@@ -16,8 +22,21 @@ const OrdersScreen = (props) => {
     )
 };
 
-OrdersScreen.navigationOptions = {
-    headerTitle: 'Your Orders'
+OrdersScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: 'Your Orders',
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={ HeaderButton }>
+                <Item 
+                    title='Menu'
+                    iconName={ Platform.OS === 'android' ? 'md-menu' : 'ios-menu' }
+                    onPress={ () => {
+                        navData.navigation.toggleDrawer();
+                    } }
+                />
+            </HeaderButtons>
+        ),
+    }
 };
 
 const styles = StyleSheet.create({});
