@@ -2,15 +2,12 @@ import React from 'react';
 import { 
     View, 
     Text, 
-    Button, 
     Image, 
     TouchableOpacity,
     TouchableNativeFeedback,
     Platform, 
     StyleSheet 
 } from 'react-native';
-
-import Colors from '../../constants/Colors';
 
 const ProductItem = (props) => {
 
@@ -24,7 +21,7 @@ const ProductItem = (props) => {
         <View style={ styles.product }>
             <View style={ styles.touchable }>
                 <TouchableComp
-                    onPress={ props.onViewDetail } 
+                    onPress={ props.onSelect } 
                     useForground>
                     <View>
                         <View style={ styles.imageContainer }>
@@ -37,14 +34,7 @@ const ProductItem = (props) => {
                             <Text style={ styles.price }>${ props.price.toFixed(2) }</Text>
                         </View>
                         <View style={ styles.actions }>
-                            <Button 
-                                color={ Colors.primary }
-                                title="View Details"
-                                onPress={ props.onViewDetail } />
-                            <Button 
-                                color={ Colors.primary }
-                                title="Add to cart" 
-                                onPress={ props.onAddToCart } />
+                            { props.children }
                         </View>
                     </View>
                 </TouchableComp>
@@ -82,8 +72,8 @@ const styles = StyleSheet.create({
     },
     details: {
         alignItems: 'center',
-        height: '15%',
-        padding: 8
+        height: '17%',
+        padding: 10
     },
     title: {
         fontFamily: 'open-sans-bold',
@@ -99,7 +89,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        height: '25%',
+        height: '23%',
         paddingHorizontal: 20
     }
 });
