@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Platform, View, Text, ScrollView, TextInput, StyleSheet } from 'react-native';
+import { 
+    Platform, 
+    View, 
+    Text, 
+    ScrollView, 
+    TextInput, 
+    Alert,
+    StyleSheet
+} from 'react-native';
 
 // header button
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
+
+import * as productsActions from '../../store/actions/products';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,16 +24,39 @@ const EditProductScreen = (props) => {
     const editedProduct = useSelector(state => 
         state.products.userProducts.find(prod => prod.id === prodId)
     );
+    
+    const disapatch = useDispatch();
 
     // state hooks - want to initialize it whether we loaded the product or not
-    const [title, setTitle] = useState(editedProduct ? editedProduct.title : '');
-    const [imageUrl, setImageUrl] = useState(editedProduct ? editedProduct.imageUrl : '');
+    const [title, setTitle] = useState(
+        editedProduct ? editedProduct.title : ''
+    );
+    const [imageUrl, setImageUrl] = useState(
+        editedProduct ? editedProduct.imageUrl : ''
+    );
     const [price, setPrice] = useState('');
-    const [description, setDescription] = useState(editedProduct ? editedProduct.description : '');
+    const [description, setDescription] = useState(
+        editedProduct ? editedProduct.description : ''
+    );
 
     const submitHandler = useCallback(() => {
-        console.log('submitting');   
-    }, []);
+        // editing
+        if(editedProduct){  
+            disapatch(productsActions.updateProduct(
+                prodId,
+                title,
+                description,
+                imageUrl
+            ))
+        } else {
+            disapatch(productsActions.createProduct(
+                title,
+                description,
+                imageUrl,
+                +price
+            ))
+        }
+    }, [disapatch, prodId, title, description, imageUrl]);
 
     useEffect(() => {
         props.navigation.setParams({ submit: submitHandler });
