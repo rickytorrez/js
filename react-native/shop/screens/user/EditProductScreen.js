@@ -5,7 +5,6 @@ import {
     Text, 
     ScrollView, 
     TextInput, 
-    Alert,
     StyleSheet
 } from 'react-native';
 
@@ -48,6 +47,7 @@ const EditProductScreen = (props) => {
                 description,
                 imageUrl
             ))
+        // creating
         } else {
             disapatch(productsActions.createProduct(
                 title,
@@ -56,6 +56,7 @@ const EditProductScreen = (props) => {
                 +price
             ))
         }
+        props.navigation.goBack();
     }, [disapatch, prodId, title, description, imageUrl]);
 
     useEffect(() => {
