@@ -8,5 +8,4 @@ class Product {
         this.price = price;
     };
 };
-
 export default Product;
