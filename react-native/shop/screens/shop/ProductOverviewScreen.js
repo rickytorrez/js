@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Platform, FlatList, Button, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, Platform, FlatList, Button, ActivityIndicator, StyleSheet } from 'react-native';
 
 // store import - useDispatch to dispatch redux actions
 import { useSelector, useDispatch } from 'react-redux'; 
@@ -19,19 +19,65 @@ import Colors from '../../constants/Colors';
 
 const ProductOverviewScreen = (props) => {
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+
     // useSelector for slice of the state
     const products = useSelector(state => state.products.availableProducts)
     const dispatch = useDispatch();
 
+    const loadProducts = useCallback(async() => {
+        setError(null);
+        setIsLoading(true);
+            try {
+                await dispatch(productActions.fetchProducts()).then();
+            } catch (err){
+                setError(err.message);
+            }
+        setIsLoading(false);
+    }, [dispatch, setIsLoading, setError]);
+
     useEffect(() => {
-        dispatch(productActions.fetchProducts());
-    }, [dispatch]);
+        loadProducts();
+    }, [dispatch, loadProducts]);
 
     const selectItemHandler = (id, title) => {
         props.navigation.navigate( 'ProductDetail', { 
             productId: id,
             productTitle: title
             });
+    };
+
+    if(error){
+        return (
+            <View style={ styles.centered }>
+                <Text>An error ocurred.</Text>
+                <Button 
+                    title='Try again'
+                    onPress= { loadProducts }
+                    color={ Colors.primary }
+                />
+            </View>
+        );
+    };
+
+    if(isLoading){
+        return (
+            <View style={ styles.centered }>
+                <ActivityIndicator 
+                    size='large'
+                    color={ Colors.primary }
+                />
+            </View>
+        );
+    };
+
+    if(!isLoading && products.length === 0){
+        return (
+            <View style={ styles.centered }>
+                <Text>No Products Found. Start Adding Some.</Text>
+            </View>
+        );
     };
 
     return (
@@ -95,6 +141,12 @@ ProductOverviewScreen.navigationOptions = (navData) => {
     }
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    centered: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    }
+});
 
 export default ProductOverviewScreen;
