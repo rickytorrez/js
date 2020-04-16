@@ -9,14 +9,21 @@ const INPUT_BLUR = 'INPUT_BLUR'
 const inputReducer = (state, action) => {
     switch(action.type){
         case INPUT_CHANGE:
-            console.log('state on inputReducer.INPUT_CHANGE => ', state)
+            console.log('================== INPUT_CHANGE =========================');
+            // console.log('copy of the previous state on INPUT_CHANGE => ', ...state);
+            console.log('state.value on inputReducer.INPUT_CHANGE => ', state.value)
+            console.log('state.isValid on inputReducer.INPUT_CHANGE => ', state.isValid)
+            console.log('_________________________________________________________');
             return {
                 ...state,
                 value: action.value,
                 isValid: action.isValid
             };
         case INPUT_BLUR:
-            console.log('state on inputReducer.INPUT_BLUR => ', state)
+            // console.log('================== INPUT_BLUR ==========================');
+            // console.log('copy of the previous state on INPUT_BLUR => ', ...state);
+            // console.log('state.value on inputReducer.INPUT_BLUR => ', state.touched)
+            // console.log('_________________________________________________________');
             return {
                 ...state,
                 touched: true
@@ -37,6 +44,7 @@ const Input = (props) => {
 
     // parent comp communication
     const { onInputChange, id } = props;
+    
     useEffect(() => {
         if(inputState.touched){
             onInputChange(id, inputState.value, inputState.isValid);
@@ -47,7 +55,6 @@ const Input = (props) => {
         // validation set up
         // email reg expression
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        // isValid helper
         let isValid = true;
         if (props.required && text.trim().length === 0) {
         isValid = false;
@@ -64,7 +71,8 @@ const Input = (props) => {
         if (props.minLength != null && text.length < props.minLength) {
         isValid = false;
         }
-
+        console.log('textChangeHandler isValid => ', isValid);
+        console.log('textChangeHandler value => ', inputState.value);
         dispatch({
             type: INPUT_CHANGE,
             value: text,
@@ -87,7 +95,7 @@ const Input = (props) => {
                 style={ styles.input } 
                 value={ inputState.value }
                 onChangeText={ textChangeHandler }
-                onBlur={ lostFocusHandler } 
+                // onBlur={ lostFocusHandler } 
             />
             { !inputState.isValid && (
                 <Text>{ props.errorText }</Text>
