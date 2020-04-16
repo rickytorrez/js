@@ -140,7 +140,10 @@ const EditProductScreen = (props) => {
                         onEndEditing={ () => console.log('onEndEditing') }
                         onSubmitEditing={ () => console.log('onSubmitEditing') }
                     />
-                    { !formState.inputValidities.title && <Text>Please enter a valid title!</Text> }
+                    { !formState.inputValidities.title && (
+                        <Text>Please enter a valid Title</Text> 
+                        )
+                    }
                 </View>
                 <View style={ styles.formControl }>
                     <Text style={ styles.label }>Image URL</Text>
@@ -149,26 +152,38 @@ const EditProductScreen = (props) => {
                         value={ formState.inputValues.imageUrl }
                         onChangeText={ textChangeHandler.bind(this, 'imageUrl') }
                     />
+                    { !formState.inputValidities.imageUrl && (
+                        <Text>Please enter a valid Image Url</Text> 
+                        )
+                    }
                 </View>
                 { editedProduct ? null : (
-                <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Price</Text>
-                    <TextInput
-                    style={ styles.input }
-                    value={ formState.inputValues.price }
-                    onChangeText={ textChangeHandler.bind(this, 'price') }
-                    keyboardType="decimal-pad"
-                    />
-                </View>
+                    <View style={ styles.formControl }>
+                        <Text style={ styles.label }>Price</Text>
+                        <TextInput
+                            style={ styles.input }
+                            value={ formState.inputValues.price }
+                            onChangeText={ textChangeHandler.bind(this, 'price') }
+                            keyboardType="decimal-pad"
+                        />
+                    </View>
                 )}
-                `<View style={ styles.formControl }>
+                    { !formState.inputValidities.price && (
+                        <Text>Please enter a valid price!</Text> 
+                        )
+                    }
+                <View style={ styles.formControl }>
                     <Text style={ styles.label }>Description</Text>
                     <TextInput
                         style={ styles.input } 
                         value={ formState.inputValues.description }
                         onChangeText={ textChangeHandler.bind(this, 'description') }
-                    />`
+                    />
                 </View>
+                { !formState.inputValidities.description && (
+                        <Text>Please enter a valid description!</Text> 
+                    )
+                }
             </View>
         </ScrollView>
     );
