@@ -17,7 +17,7 @@ import ProductItem from '../../components/shop/ProductItem';
 
 import Colors from '../../constants/Colors';
 
-const ProductOverviewScreen = (props) => {
+const ProductOverviewScreen = (props) => {    
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -27,6 +27,7 @@ const ProductOverviewScreen = (props) => {
     const dispatch = useDispatch();
 
     const loadProducts = useCallback(async() => {
+
         setError(null);
         setIsLoading(true);
             try {
@@ -37,6 +38,18 @@ const ProductOverviewScreen = (props) => {
         setIsLoading(false);
     }, [dispatch, setIsLoading, setError]);
 
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener(
+            'willFocus', 
+            loadProducts
+        );
+        // gets rid of subscription when component is unmounted
+        return () => {
+            willFocusSub.remove()
+        };
+    }, [loadProducts]);
+
+    // fetches the products initially
     useEffect(() => {
         loadProducts();
     }, [dispatch, loadProducts]);
