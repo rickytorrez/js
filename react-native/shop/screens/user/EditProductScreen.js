@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import { 
     Platform, 
     View,  
@@ -6,7 +6,9 @@ import {
     Alert,
     Text,
     TextInput,
-    StyleSheet
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    StyleSheet,
 } from 'react-native';
 
 // header button
@@ -17,6 +19,7 @@ import HeaderButton from '../../components/UI/HeaderButton';
 import * as productsActions from '../../store/actions/products';
 
 import { useSelector, useDispatch } from 'react-redux';
+import Colors from '../../constants/Colors';
 
 // identifier for formReducer update
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
@@ -48,6 +51,10 @@ const formReducer = (state, action) => {
 
 const EditProductScreen = (props) => {
 
+    // state to manage loading and errors 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+
     // first before initializing state
     const prodId = props.navigation.getParam('productId');
     const editedProduct = useSelector(state => 
@@ -76,7 +83,15 @@ const EditProductScreen = (props) => {
         formIsValid: editedProduct ? true : false, 
     });
 
-    const submitHandler = useCallback(() => {
+    useEffect(() => {
+        if(error){
+            Alert.alert('An error ocurred!', error, [
+                { text: 'Sad' }
+            ]);
+        };
+    }, [error]);
+
+    const submitHandler = useCallback( async() => {
         // check for valid data
         if (!formState.formIsValid){
             console.log(formState);
@@ -85,26 +100,33 @@ const EditProductScreen = (props) => {
             ]);
             return;
         }
-        // editing
-        if(editedProduct){  
-            dispatch(productsActions.updateProduct(
-                prodId,
-                formState.inputValues.title,
-                formState.inputValues.description,
-                formState.inputValues.imageUrl
-                )
-            );
-        // creating
-        } else {
-            dispatch(productsActions.createProduct(
-                formState.inputValues.title,
-                formState.inputValues.description,
-                formState.inputValues.imageUrl,
-                +formState.inputValues.price
-                )
-            );
+        setError(null)
+        setIsLoading(true);
+        try {
+            // editing
+            if(editedProduct){  
+                await dispatch(productsActions.updateProduct(
+                    prodId,
+                    formState.inputValues.title,
+                    formState.inputValues.description,
+                    formState.inputValues.imageUrl
+                    )
+                );
+            // creating
+            } else {
+                await dispatch(productsActions.createProduct(
+                    formState.inputValues.title,
+                    formState.inputValues.description,
+                    formState.inputValues.imageUrl,
+                    +formState.inputValues.price
+                    )
+                );
+            }
+            props.navigation.goBack();
+        } catch (err){
+            setError(err.message);
         }
-        props.navigation.goBack();
+        setIsLoading(false);
     }, [dispatch, prodId, formState]);
 
     useEffect(() => {
@@ -124,68 +146,85 @@ const EditProductScreen = (props) => {
         });
     };
 
+    if(isLoading){
+        return(
+            <View style={ styles.centered }>
+                <ActivityIndicator 
+                    size='large'
+                    colors={ Colors.primary }
+                />
+            </View>
+        );
+    };
+
     return (
-        <ScrollView>
-            <View style={ styles.form }>
-                <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Title</Text>
-                    <TextInput
-                        style={ styles.input }
-                        value={ formState.inputValues.title }
-                        onChangeText={ textChangeHandler.bind(this, 'title') }
-                        keyboardType="default"
-                        autoCapitalize="sentences"
-                        autoCorrect
-                        returnKeyType="next"
-                        onEndEditing={ () => console.log('onEndEditing') }
-                        onSubmitEditing={ () => console.log('onSubmitEditing') }
-                    />
-                    { !formState.inputValidities.title && (
-                        <Text>Please enter a valid Title</Text> 
-                        )
-                    }
-                </View>
-                <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Image URL</Text>
-                    <TextInput
-                        style={ styles.input }
-                        value={ formState.inputValues.imageUrl }
-                        onChangeText={ textChangeHandler.bind(this, 'imageUrl') }
-                    />
-                    { !formState.inputValidities.imageUrl && (
-                        <Text>Please enter a valid Image Url</Text> 
-                        )
-                    }
-                </View>
-                { editedProduct ? null : (
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior='padding'
+            keyboardVerticalOffset={ 100 }
+        >
+            <ScrollView>
+                <View style={ styles.form }>
                     <View style={ styles.formControl }>
-                        <Text style={ styles.label }>Price</Text>
+                        <Text style={ styles.label }>Title</Text>
                         <TextInput
                             style={ styles.input }
-                            value={ formState.inputValues.price }
-                            onChangeText={ textChangeHandler.bind(this, 'price') }
-                            keyboardType="decimal-pad"
+                            value={ formState.inputValues.title }
+                            onChangeText={ textChangeHandler.bind(this, 'title') }
+                            keyboardType="default"
+                            autoCapitalize="sentences"
+                            autoCorrect
+                            returnKeyType="next"
+                            onEndEditing={ () => console.log('onEndEditing') }
+                            onSubmitEditing={ () => console.log('onSubmitEditing') }
+                        />
+                        { !formState.inputValidities.title && (
+                            <Text>Please enter a valid Title</Text> 
+                            )
+                        }
+                    </View>
+                    <View style={ styles.formControl }>
+                        <Text style={ styles.label }>Image URL</Text>
+                        <TextInput
+                            style={ styles.input }
+                            value={ formState.inputValues.imageUrl }
+                            onChangeText={ textChangeHandler.bind(this, 'imageUrl') }
+                        />
+                        { !formState.inputValidities.imageUrl && (
+                            <Text>Please enter a valid Image Url</Text> 
+                            )
+                        }
+                    </View>
+                    { editedProduct ? null : (
+                        <View style={ styles.formControl }>
+                            <Text style={ styles.label }>Price</Text>
+                            <TextInput
+                                style={ styles.input }
+                                value={ formState.inputValues.price }
+                                onChangeText={ textChangeHandler.bind(this, 'price') }
+                                keyboardType="decimal-pad"
+                            />
+                        </View>
+                    )}
+                        { !formState.inputValidities.price && (
+                            <Text>Please enter a valid price!</Text> 
+                            )
+                        }
+                    <View style={ styles.formControl }>
+                        <Text style={ styles.label }>Description</Text>
+                        <TextInput
+                            style={ styles.input } 
+                            value={ formState.inputValues.description }
+                            onChangeText={ textChangeHandler.bind(this, 'description') }
                         />
                     </View>
-                )}
-                    { !formState.inputValidities.price && (
-                        <Text>Please enter a valid price!</Text> 
+                    { !formState.inputValidities.description && (
+                            <Text>Please enter a valid description!</Text> 
                         )
                     }
-                <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Description</Text>
-                    <TextInput
-                        style={ styles.input } 
-                        value={ formState.inputValues.description }
-                        onChangeText={ textChangeHandler.bind(this, 'description') }
-                    />
                 </View>
-                { !formState.inputValidities.description && (
-                        <Text>Please enter a valid description!</Text> 
-                    )
-                }
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
@@ -224,6 +263,11 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderBottomColor: '#ccc',
         borderBottomWidth: 1
+    },
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

@@ -26,6 +26,8 @@ export const fetchProducts = () => {
             // array to be populated from server/db data
             const loadedProducts = [];
             for(const key in responseData){
+                console.log('key in response data for ', responseData[key].title, 'id: ', key);
+                
                 loadedProducts.push(
                     new Product(
                         key,
@@ -48,7 +50,20 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-    return { type: DELETE_PRODUCT, pid: productId }
+    return async dispatch => {       
+        const response = await fetch(
+            `https://rn-complete-guide-16929.firebaseio.com/products/${productId}.json`, 
+            {
+                method: 'DELETE',
+            }
+        );
+
+        if(!response.ok){
+            throw new Error('Something went wrong!');
+        }
+
+        dispatch ({ type: DELETE_PRODUCT, pid: productId })
+    }
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
@@ -72,11 +87,12 @@ export const createProduct = (title, description, imageUrl, price) => {
 
         // unpack response to get the data
         const responseData = await response.json();
+        console.log(responseData);
         
         dispatch ({ 
             type: CREATE_PRODUCT, 
             productData: {
-                id: responseData,
+                id: responseData.name,
                 title,
                 description,
                 imageUrl,
@@ -88,7 +104,7 @@ export const createProduct = (title, description, imageUrl, price) => {
 
 export const updateProduct = (id, title, description, imageUrl) => {
     return async dispatch => {
-        await fetch(
+        const response = await fetch(
             `https://rn-complete-guide-16929.firebaseio.com/products/${id}.json`, 
             {
                 method: 'PATCH',
@@ -103,6 +119,10 @@ export const updateProduct = (id, title, description, imageUrl) => {
                 })
             }
         );
+
+        if(!response.ok){
+            throw new Error('Something went wrong!');
+        }
 
         dispatch ({ 
             type: UPDATE_PRODUCT, 
