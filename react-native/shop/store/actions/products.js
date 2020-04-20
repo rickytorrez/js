@@ -66,14 +66,12 @@ export const createProduct = (title, description, imageUrl, price) => {
                     description,
                     imageUrl,
                     price
-                    }
-                )
+                })
             }
         );
 
         // unpack response to get the data
         const responseData = await response.json();
-        console.log(responseData);
         
         dispatch ({ 
             type: CREATE_PRODUCT, 
@@ -89,13 +87,31 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-    return { 
-        type: UPDATE_PRODUCT, 
-        pid: id,
-        productData: {
-            title,
-            description,
-            imageUrl
-        }
-    };
+    return async dispatch => {
+        await fetch(
+            `https://rn-complete-guide-16929.firebaseio.com/products/${id}.json`, 
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // no need to pass price since we're not getting it
+                body: JSON.stringify({
+                    title,
+                    description,
+                    imageUrl
+                })
+            }
+        );
+
+        dispatch ({ 
+            type: UPDATE_PRODUCT, 
+            pid: id,
+            productData: {
+                title,
+                description,
+                imageUrl
+            }
+        });
+    }
 };
