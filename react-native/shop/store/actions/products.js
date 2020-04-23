@@ -26,7 +26,7 @@ export const fetchProducts = () => {
             // array to be populated from server/db data
             const loadedProducts = [];
             for(const key in responseData){
-                console.log('key in response data for ', responseData[key].title, 'id: ', key);
+                // console.log('key in response data for ', responseData[key].title, 'id: ', key);
                 
                 loadedProducts.push(
                     new Product(
