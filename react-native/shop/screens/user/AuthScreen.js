@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
+import Input from '../../components/UI/Input';
 
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
@@ -20,9 +21,9 @@ const AuthScreen = (props) => {
             style={ styles.screen }
             behavior='padding'
             keyboardVerticalOffset={ 50 }>
-                <LinearGradient 
+                {/* <LinearGradient 
                     colors={['#ffedff', '#ffe3ff']}
-                    style={ styles.gradient }>
+                    style={ styles.gradient }> */}
                     <Card style={ styles.authContainer }>
                         <Text 
                             style={ styles.label }>E-mail</Text>
@@ -31,7 +32,7 @@ const AuthScreen = (props) => {
                             keyboardType='email-address'
                             autoCapitalize='none'
                             onChangeText={() => {}}
-                            // TODO value=
+                            // TODO value= (initialValue)
                         />
                         <Text
                             style={ styles.label }>Password</Text>
@@ -56,7 +57,7 @@ const AuthScreen = (props) => {
                             }}
                         />
                     </Card>
-                </LinearGradient>
+                {/* </LinearGradient> */}
         </KeyboardAvoidingView>
     )
 };

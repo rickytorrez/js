@@ -9,11 +9,11 @@ const INPUT_BLUR = 'INPUT_BLUR'
 const inputReducer = (state, action) => {
     switch(action.type){
         case INPUT_CHANGE:
-            console.log('================== INPUT_CHANGE =========================');
-            // console.log('copy of the previous state on INPUT_CHANGE => ', ...state);
-            console.log('state.value on inputReducer.INPUT_CHANGE => ', state.value)
-            console.log('state.isValid on inputReducer.INPUT_CHANGE => ', state.isValid)
-            console.log('_________________________________________________________');
+            // console.log('================== INPUT_CHANGE =========================');
+            // // console.log('copy of the previous state on INPUT_CHANGE => ', ...state);
+            // console.log('state.value on inputReducer.INPUT_CHANGE => ', state.value)
+            // console.log('state.isValid on inputReducer.INPUT_CHANGE => ', state.isValid)
+            // console.log('_________________________________________________________');
             return {
                 ...state,
                 value: action.value,
