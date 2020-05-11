@@ -37,7 +37,8 @@ export const signup = (email, password) => {
         console.log(responseData);
 
         // action sent to our app after the action is dispatched to the server 
-        dispatch({ type: SIGNUP })
+        // make sure we carry the token and userId for the reducer
+        dispatch({ type: SIGNUP, token: responseData.idToken , userId: responseData.localId })
     };
 };
 
@@ -75,6 +76,7 @@ export const login = (email, password) => {
         console.log(responseData);
 
         // action sent to our app after the action is dispatched to the server 
-        dispatch({ type: LOGIN })
+        // make sure we carry the token and userId for the reducer
+        dispatch({ type: LOGIN, token: responseData.idToken , userId: responseData.localId })
     };
 };
