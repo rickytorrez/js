@@ -20,8 +20,18 @@ export const signup = (email, password) => {
         );
         
         if(!response.ok){
-            console.log(response);
-        }
+            const errorResponseData = await response.json();
+            const errorId = errorResponseData.error.message;
+            let message = 'Something went wrong!'
+            if(errorId === 'EMAIL_EXISTS') {
+                message = 'This email exists already';
+            } else if (errorId === 'WEAK_PASSWORD') {
+                message = 'Password should be at least 6 characters long';
+            } else if (errorId === 'INVALID_EMAIL') {
+                message = 'Please provide a valid email format';
+            }
+            throw new Error(message);
+        };
 
         const responseData = await response.json();
         console.log(responseData);
@@ -50,8 +60,16 @@ export const login = (email, password) => {
         );
         
         if(!response.ok){
-            console.log(response);
-        }
+            const errorResponseData = await response.json();
+            const errorId = errorResponseData.error.message;
+            let message = 'Something went wrong!'
+            if(errorId === 'EMAIL_NOT_FOUND') {
+                message = 'This email could not be found!';
+            } else if (errorId === 'INVALID_PASSWORD') {
+                message = 'This password is not valid!';
+            }
+            throw new Error(message);
+        };
 
         const responseData = await response.json();
         console.log(responseData);

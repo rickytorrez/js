@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { 
     View, 
     KeyboardAvoidingView, 
@@ -6,6 +6,7 @@ import {
     TextInput,
     Button,
     ActivityIndicator,
+    Alert,
     StyleSheet 
 } from 'react-native';
 
@@ -50,6 +51,7 @@ const AuthScreen = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
+    const [error, setError] = useState();
     const dispatch = useDispatch();
 
     console.log('rendered');
@@ -71,6 +73,12 @@ const AuthScreen = (props) => {
         formIsValid: false, 
     });
 
+    useEffect(() => {
+        if (error){
+            Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }])
+        }
+    }, [error]);
+
     const authHandler = async () => {
         let action;
         if (isSignUp) {
@@ -84,9 +92,15 @@ const AuthScreen = (props) => {
                 formState.inputValues.password
             )
         }
+        setError(null);
         setIsLoading(true);
-        await dispatch(action);
-        setIsLoading(false);
+        try {
+            await dispatch(action);
+            props.navigation.navigate('Shop');
+        } catch (err) {
+            setError(err.message);
+            setIsLoading(false);
+        }
     };
 
     const textChangeHandler = (inputIdentifier, text) => {
