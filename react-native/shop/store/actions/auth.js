@@ -5,13 +5,17 @@ import { AsyncStorage } from 'react-native';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 
+let timer;
 
-export const authenticate = (userId, token) => {
-    return { 
-        type: AUTHENTICATE,
-        userId: userId,
-        token: token    
-    }
+export const authenticate = (userId, token, expiryTime) => {
+    return dispatch => {
+        dispatch(setLogoutTimer(expiryTime));
+        dispatch( { 
+            type: AUTHENTICATE,
+            userId: userId,
+            token: token    
+        });
+    }; 
 };
 
 export const signup = (email, password) => {
@@ -51,7 +55,13 @@ export const signup = (email, password) => {
 
         // action sent to our app after the action is dispatched to the server 
         // make sure we carry the token and userId for the reducer
-        dispatch(authenticate(responseData.localId, responseData.idToken));
+        dispatch(
+            authenticate(
+                responseData.localId, 
+                responseData.idToken,
+                parseInt(responseData.expiresIn) * 1000
+            )
+        );
         // gets the expiration time and converts it to a number and then miliseconds
         const expirationDate = new Date
             (new Date().getTime() + parseInt(responseData.expiresIn) * 1000
@@ -95,7 +105,13 @@ export const login = (email, password) => {
 
         // action sent to our app after the action is dispatched to the server 
         // make sure we carry the token and userId for the reducer
-        dispatch(authenticate(responseData.localId, responseData.idToken));
+        dispatch(
+            authenticate(
+                responseData.localId, 
+                responseData.idToken,
+                parseInt(responseData.expiresIn) * 1000
+            )
+        );
         // gets the expiration time and converts it to a number and then miliseconds
         const expirationDate = new Date
             (new Date().getTime() + parseInt(responseData.expiresIn) * 1000
@@ -105,7 +121,27 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
+    clearLogoutTimer();
+    AsyncStorage.removeItem('userData');
     return { type: LOGOUT }
+};
+
+const clearLogoutTimer = () => {
+    if(timer){
+        clearTimeout(timer);
+    };
+};
+
+const setLogoutTimer = (expirationTime) => {
+    // uses redux thunk where the inner function gets dispatched as an argument => logout
+    return dispatch => {
+        // this function executes once the token expires
+        timer = setTimeout( () => {
+            // once the async task finishes ( token expires ), we dispatch logout
+            dispatch(logout()); 
+        // timer expires after this time
+        }, expirationTime)
+    };   
 };
 
 const saveDataToStorage = (token, userId, expirationDate) => {
