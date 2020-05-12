@@ -3,6 +3,7 @@ import {
     View,
     Platform, 
     FlatList, 
+    Text,
     ActivityIndicator, 
     StyleSheet 
 } from 'react-native';
@@ -44,6 +45,14 @@ const OrdersScreen = (props) => {
         );
     };
 
+    if(orders.length === 0){
+        return(
+            <View style={ styles.ifCheck }>
+                <Text>No orders found, check out the items avaiable!</Text>
+            </View>
+        )
+    };
+
     return (
         <FlatList 
             data={ orders }
@@ -82,6 +91,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    ifCheck: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

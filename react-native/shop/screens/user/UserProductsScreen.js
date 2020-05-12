@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Platform, FlatList, Alert, StyleSheet } from 'react-native';
+import { View, Text, Button, Platform, FlatList, Alert, StyleSheet } from 'react-native';
 
 import ProductItem from '../../components/shop/ProductItem';
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,6 +32,14 @@ const UserProductsScreen = (props) => {
                 } 
             }
         ])
+    };
+
+    if(userProducts.length === 0){
+        return(
+            <View style={ styles.ifCheck }>
+                <Text>No products found, create some!</Text>
+            </View>
+        )
     };
 
     return (
@@ -96,6 +104,12 @@ UserProductsScreen.navigationOptions = (navData) => {
     };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    ifCheck: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
 
 export default UserProductsScreen;

@@ -6,7 +6,9 @@ export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        // get userId
+        const userId = getState().auth.userId;
         // if everything suceeds 
         try{
             // redux thunk allows you to send any async code before the action is dispatched
@@ -31,7 +33,7 @@ export const fetchProducts = () => {
                 loadedProducts.push(
                     new Product(
                         key,
-                        'u1',
+                        responseData[key].ownerId,
                         responseData[key].title,
                         responseData[key].imageUrl,
                         responseData[key].description,
@@ -39,7 +41,10 @@ export const fetchProducts = () => {
                     )
                 );
             }
-            dispatch({ type: SET_PRODUCTS, products: loadedProducts })
+            dispatch({ 
+                type: SET_PRODUCTS, 
+                products: loadedProducts, 
+                userProducts: loadedProducts.filter(prod => prod.ownerId === userId) })
         }
         // potential error handler
         catch(err){
@@ -50,9 +55,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-    return async dispatch => {       
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;    
         const response = await fetch(
-            `https://rn-complete-guide-16929.firebaseio.com/products/${productId}.json`, 
+            `https://rn-complete-guide-16929.firebaseio.com/products/${productId}.json?auth=${token}`, 
             {
                 method: 'DELETE',
             }
@@ -67,10 +73,12 @@ export const deleteProduct = productId => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         // redux thunk allows you to send any async code before the action is dispatched
+        const token = getState().auth.token;
+        const userId = getState().auth.userId;
         const response = await fetch(
-            'https://rn-complete-guide-16929.firebaseio.com/products.json', 
+            `https://rn-complete-guide-16929.firebaseio.com/products.json?auth=${token}`, 
             {
                 method: 'POST',
                 headers: {
@@ -80,7 +88,8 @@ export const createProduct = (title, description, imageUrl, price) => {
                     title,
                     description,
                     imageUrl,
-                    price
+                    price,
+                    ownerId: userId
                 })
             }
         );
@@ -96,16 +105,18 @@ export const createProduct = (title, description, imageUrl, price) => {
                 title,
                 description,
                 imageUrl,
-                price
+                price,
+                ownerId: userId
             }
         });
     }
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
         const response = await fetch(
-            `https://rn-complete-guide-16929.firebaseio.com/products/${id}.json`, 
+            `https://rn-complete-guide-16929.firebaseio.com/products/${id}.json?auth=${token}`, 
             {
                 method: 'PATCH',
                 headers: {

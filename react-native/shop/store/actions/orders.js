@@ -4,12 +4,13 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
 
 export const setOrders = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId;
 
         try{
             // redux thunk allows you to send any async code before the action is dispatched
             const response = await fetch(
-                'https://rn-complete-guide-16929.firebaseio.com/orders/u1.json'
+                `https://rn-complete-guide-16929.firebaseio.com/orders/${userId}.json`
             );
 
             // if response is in the 200 status code range
@@ -44,19 +45,22 @@ export const setOrders = () => {
 };
 
 export const addOrder = (cartItems, totalAmount) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
 
         const date = new Date();
-
-        const response = await fetch('https://rn-complete-guide-16929.firebaseio.com/orders/u1.json', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cartItems,
-                totalAmount,
-                date: date.toISOString()
+        const token = getState().auth.token;
+        const userId = getState().auth.userId;
+        const response = await fetch(`https://rn-complete-guide-16929.firebaseio.com/orders/${userId}.json?auth=${token}`, 
+            {
+                method: 'POST',
+                headers: 
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                body: JSON.stringify({
+                    cartItems,
+                    totalAmount,
+                    date: date.toISOString()
             })
         });
 
