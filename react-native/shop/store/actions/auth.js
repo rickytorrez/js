@@ -1,5 +1,17 @@
-export const SIGNUP = 'SIGNUP';
-export const LOGIN = 'LOGIN';
+import { AsyncStorage } from 'react-native';
+
+// export const SIGNUP = 'SIGNUP';
+// export const LOGIN = 'LOGIN';
+export const AUTHENTICATE = 'AUTHENTICATE';
+
+
+export const authenticate = (userId, token) => {
+    return { 
+        type: AUTHENTICATE,
+        userId: userId,
+        token: token    
+    }
+};
 
 export const signup = (email, password) => {
     return async dispatch => {
@@ -38,7 +50,12 @@ export const signup = (email, password) => {
 
         // action sent to our app after the action is dispatched to the server 
         // make sure we carry the token and userId for the reducer
-        dispatch({ type: SIGNUP, token: responseData.idToken , userId: responseData.localId })
+        dispatch(authenticate(responseData.localId, responseData.idToken));
+        // gets the expiration time and converts it to a number and then miliseconds
+        const expirationDate = new Date
+            (new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+        );
+        saveDataToStorage(responseData.idToken, responseData.localId, expirationDate);
     };
 };
 
@@ -77,6 +94,22 @@ export const login = (email, password) => {
 
         // action sent to our app after the action is dispatched to the server 
         // make sure we carry the token and userId for the reducer
-        dispatch({ type: LOGIN, token: responseData.idToken , userId: responseData.localId })
+        dispatch(authenticate(responseData.localId, responseData.idToken));
+        // gets the expiration time and converts it to a number and then miliseconds
+        const expirationDate = new Date
+            (new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+        );
+        saveDataToStorage(responseData.idToken, responseData.localId, expirationDate);
     };
+};
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+    AsyncStorage.setItem(
+        'userData', 
+        JSON.stringify({
+            token: token,
+            userId: userId,
+            expirationDate: expirationDate.toISOString()
+        })
+    );
 };
